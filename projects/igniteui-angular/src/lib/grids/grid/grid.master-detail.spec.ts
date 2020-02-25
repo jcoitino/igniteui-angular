@@ -395,7 +395,10 @@ describe('IgxGrid Master Detail #grid', () => {
             fix.detectChanges();
 
             GridFunctions.simulateCellKeydown(targetCellElement, 'ArrowDown');
-            await wait();
+            await wait(DEBOUNCETIME);
+            fix.detectChanges();
+
+            await wait(DEBOUNCETIME);
             fix.detectChanges();
 
             const detailRow = GridFunctions.getMasterRowDetail(row);
@@ -481,7 +484,7 @@ describe('IgxGrid Master Detail #grid', () => {
             expect(document.activeElement).toBe(grid.getCellByColumn(0, 'CompanyName').nativeElement);
          });
 
-         it('Should expand and collapse using Alt + Right/Down and Alt + Left/Up without losing focus on current row.', () => {
+         it('Should expand and collapse using Alt + Right/Down and Alt + Left/Up without losing focus on current row.', async() => {
             const row = grid.getRowByIndex(0) as IgxGridRowComponent;
             const targetCellElement = grid.getCellByColumn(0, 'ContactName');
             targetCellElement.onFocus(null);
@@ -490,24 +493,28 @@ describe('IgxGrid Master Detail #grid', () => {
 
             // collapse with alt + arrowup
             GridFunctions.simulateCellKeydown(targetCellElement, 'ArrowUp', true);
+            await wait(DEBOUNCETIME);
             fix.detectChanges();
             expect(row.expanded).toBeFalsy();
             expect(targetCellElement.focused).toBeTruthy();
 
             // expand with alt + ArrowDown
             GridFunctions.simulateCellKeydown(targetCellElement, 'ArrowDown', true);
+            await wait(DEBOUNCETIME);
             fix.detectChanges();
             expect(row.expanded).toBeTruthy();
             expect(targetCellElement.focused).toBeTruthy();
 
              // collapse with alt + arrowleft
              GridFunctions.simulateCellKeydown(targetCellElement, 'ArrowLeft', true);
+             await wait(DEBOUNCETIME);
              fix.detectChanges();
              expect(row.expanded).toBeFalsy();
              expect(targetCellElement.focused).toBeTruthy();
 
             // expand with alt + arrowright
             GridFunctions.simulateCellKeydown(targetCellElement, 'ArrowRight', true);
+            await wait(DEBOUNCETIME);
             fix.detectChanges();
             expect(row.expanded).toBeTruthy();
             expect(targetCellElement.focused).toBeTruthy();

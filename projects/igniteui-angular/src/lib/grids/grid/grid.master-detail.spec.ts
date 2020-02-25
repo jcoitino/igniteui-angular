@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import { async, TestBed, ComponentFixture, getTestBed } from '@angular/core/testing';
 import { configureTestSuite } from '../../test-utils/configure-suite';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
@@ -346,6 +346,11 @@ describe('IgxGrid Master Detail #grid', () => {
 
     describe('Keyboard Navigation ', () => {
         beforeEach(async() => {
+            let activeFixtures = 0;
+            const testBedApi: any = getTestBed();
+            testBedApi._activeFixtures.forEach((fixture) => fixture._destroyed ? activeFixtures++ : null);
+            console.log(activeFixtures);
+
             fix = TestBed.createComponent(AllExpandedGridMasterDetailComponent);
             fix.detectChanges();
             grid = fix.componentInstance.grid;
